@@ -1,3 +1,4 @@
+
 import  mongoose from 'mongoose';
 
 
@@ -39,6 +40,16 @@ const UserSchema = new mongoose.Schema({
     minlength: 2,
     default: null
   },
+  verified: {
+    type: Boolean,
+    default: false
+  }, 
+  token: {
+   type: Number, 
+   required: true, 
+   min: 100000,
+    max: 999999
+  }
 }, { 
     timestamps: true,
     versionKey: false
