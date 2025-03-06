@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the E-Commerce API');
+    res.send('Welcome to the care-connect API');
 });
 
 app.use(`${api}/auth`, authRoutes)
