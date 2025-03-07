@@ -12,6 +12,6 @@ router.get('/', (req, res) => {
 })
 router.post('/register', validateRegDetails, HashPassword, RegisterUser);
 router.post("/login",  ValidateLogDetails, Login);
-router.post("/validate-token", validateToken);
+router.post("/validate-code", validateToken);
 
 export default router

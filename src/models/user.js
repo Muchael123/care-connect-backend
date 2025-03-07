@@ -1,6 +1,17 @@
 
+import exp from 'constants';
 import  mongoose from 'mongoose';
 
+const tokenSchema = new mongoose.Schema({
+  token: {
+    type: Number,
+    required: false
+  },
+  expiry: {
+    type: Date,
+    required: false
+  }
+});
 
   
 const UserSchema = new mongoose.Schema({
@@ -44,12 +55,16 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }, 
-  token: {
-   type: Number, 
-   required: true, 
-   min: 100000,
-    max: 999999
-  }
+  AuthCode: tokenSchema,
+  fcmToken: {
+    type: String,
+    default: null
+  },
+  resetPasswordToken: {
+    type: String,
+    default: null
+  },
+
 }, { 
     timestamps: true,
     versionKey: false
