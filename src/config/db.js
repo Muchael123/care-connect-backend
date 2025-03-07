@@ -9,8 +9,9 @@ export const connectDB = async () => {
       dbName: 'care-connect', 
     });
     console.log('✅ MongoDB Connected');
+    return true;
   } catch (error) {
     console.error('❌ MongoDB Connection Failed:', error);
-    process.exit(1); 
+    return false;
   }
 };

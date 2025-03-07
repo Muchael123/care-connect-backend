@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 export default async function SendEmail(username, verificationCode, email){
     const emailtemplate = `<!DOCTYPE html>
 <html>
@@ -37,9 +38,9 @@ const transporter = nodemailer.createTransport({
     },
 });
 const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from:`"Care-Connect" ${process.env.EMAIL_USER}`,
     to: email,
-    subject: "🚨 Fish Cage Movement Alert 🚨",
+    subject: "Care-Connect User Verification",
     html: emailtemplate
 }
 const info = await transporter.sendMail(mailOptions);

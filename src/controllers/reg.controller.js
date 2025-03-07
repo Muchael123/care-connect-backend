@@ -1,5 +1,6 @@
 import SendEmail from "../lib/sendEmail.js";
 import User from "../models/user.js";
+import crypto from "crypto";
 
 export default async function RegisterUser(req, res){
    try{
@@ -26,7 +27,7 @@ export default async function RegisterUser(req, res){
     res.status(201).json({
       message: `User ${user.username} registered successfully`,
     });
-    SendEmail(user.username, token, user.email)
+    await SendEmail(user.username, token, user.email)
    }
    catch(e){
       console.log(e)
