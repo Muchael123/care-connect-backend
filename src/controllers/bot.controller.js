@@ -1,10 +1,27 @@
-
+import Chat from "../models/chat.js"
 import ChatAi from "../lib/chatai.js";
 
 export default async function chatBot(req, res){
-    const {chat} = req.body;
+    const {chatid, message} = req.body;
+
+    const user = req.user;
+    let history = [];
+    if(!chatid ){
+       //create new chat
+       const chat = await Chat.create({userId: user.id, messages: [{role: "user", parts: [{text: message}]}]});
+    }else{
+        // get chat
+        const chat = await Chat.findById(chatid);
+        history = chat.messages;
+        chat.messages.push({role: "user", parts: [{text: message}]});
+        chat.save();
+    }
+
     try{
-        const result = await ChatAi([], chat);
+        const result = await ChatAi(history, message);
+        if(result){
+            res.status(200).json({message: result?.patient_response});
+        }
         if(result.system_actions.includes("report_to_nurse")){
             // Send alert to nurse
         }
@@ -13,10 +30,6 @@ export default async function chatBot(req, res){
         }
         else if(result.system_actions.includes("view_nearby_professionals")){
             // Get nearby professionals
-        }
-        else{
-            
-            res.status(200).json({message: result?.patient_response});
         }
        
     }

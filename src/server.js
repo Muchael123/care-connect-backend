@@ -2,7 +2,7 @@ import express, { json } from 'express';
 import cors from 'cors';
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from './routes/user.route.js';
-import botRoutes from './routes/bot.route.js';
+import chatRoutes from './routes/chat.route.js';
 import { connectDB } from './config/db.js';
 import morgan from 'morgan';
 
@@ -35,7 +35,7 @@ function startServer() {
 
     app.use(`${api}/auth`, authRoutes);
     app.use(`${api}/user`, userRoutes);
-    app.use(`${api}/bot`, botRoutes);
+    app.use(`${api}/chat`, chatRoutes);
 
     // Handle 404
     app.use((req, res) => {
