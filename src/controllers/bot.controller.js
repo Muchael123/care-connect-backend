@@ -6,12 +6,13 @@ export default async function chatBot(req, res){
 
     const user = req.user;
     let history = [];
+    let chat;
     if(!chatid ){
        //create new chat
-       const chat = await Chat.create({userId: user.id, messages: [{role: "user", parts: [{text: message}]}]});
+       chat = await Chat.create({userId: user.id, messages: [{role: "user", parts: [{text: message}]}]});
     }else{
         // get chat
-        const chat = await Chat.findById(chatid);
+        chat = await Chat.findById(chatid);
         history = chat.messages;
         chat.messages.push({role: "user", parts: [{text: message}]});
         chat.save();
@@ -20,7 +21,7 @@ export default async function chatBot(req, res){
     try{
         const result = await ChatAi(history, message);
         if(result){
-            res.status(200).json({message: result?.patient_response});
+            res.status(200).json({message: result?.patient_response, chatid: chat._id});
         }
         if(result.system_actions.includes("report_to_nurse")){
             // Send alert to nurse
