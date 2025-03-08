@@ -1,5 +1,4 @@
 
-import exp from 'constants';
 import  mongoose from 'mongoose';
 
 const tokenSchema = new mongoose.Schema({
@@ -56,10 +55,10 @@ const UserSchema = new mongoose.Schema({
     default: false
   }, 
   AuthCode: tokenSchema,
-  fcmToken: {
+  fcm: [{
     type: String,
     default: null
-  },
+  }],
   resetPasswordToken: {
     type: String,
     default: null

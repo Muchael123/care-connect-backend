@@ -1,10 +1,12 @@
 import SendEmail from "../lib/sendEmail.js";
 import User from "../models/user.js";
-import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import generateVerificationCode from "../lib/gencode.js";
 
 export default async function RegisterUser(req, res){
    try{
    const {email, password, username} = req.body;
+   console.log(req.body);
    const userExist = await User
    .findOne({username})
    if(userExist) return res.status(409).json({message: "Username already exists"})
@@ -12,13 +14,14 @@ export default async function RegisterUser(req, res){
    const userExists = await User.findOne({ email });
    
 
-   if (userExists) return res.status(409).json({ message: 'User already exists' });
+   if (userExists) return res.status(409).json({ message: 'User with the Email already exists' });
 
-   const generateVerificationCode = () => {
-      return crypto.randomInt(100000, 999999);
-    };
+  
     const token = generateVerificationCode();
 
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    
     const expiryTime = new Date();
     expiryTime.setMinutes(expiryTime.getMinutes() + 30);
 
@@ -35,6 +38,7 @@ export default async function RegisterUser(req, res){
     console.log(user, expiryTime)
 
     await SendEmail(user.username, token, user.email, expiryTime);
+
     res.status(201).json({
       message: `User ${user.username} registered successfully. Check your email for verification code.`,
     });

@@ -7,6 +7,7 @@ const schema = Joi.object({
 })
 export default function validateRegDetails (req, res, next){
     const {error} = schema.validate(req.body, { abortEarly: false });
+    console.log(error);
     if (error) {
         return res.status(400).json({ errors: error.details.map(err => err.message) });
       }

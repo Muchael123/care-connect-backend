@@ -1,6 +1,8 @@
 import express, { json } from 'express';
 import cors from 'cors';
 import authRoutes from "./routes/auth.route.js";
+import userRoutes from './routes/user.route.js';
+import botRoutes from './routes/bot.route.js';
 import { connectDB } from './config/db.js';
 import morgan from 'morgan';
 
@@ -32,6 +34,8 @@ function startServer() {
     });
 
     app.use(`${api}/auth`, authRoutes);
+    app.use(`${api}/user`, userRoutes);
+    app.use(`${api}/bot`, botRoutes);
 
     // Handle 404
     app.use((req, res) => {
@@ -40,7 +44,7 @@ function startServer() {
 
     // Start Server
     app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
+        console.log(`Server running at http://localhost:${PORT}`);
     });
 }
 

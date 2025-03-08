@@ -13,5 +13,6 @@ router.get('/', (req, res) => {
 router.post('/register', validateRegDetails, HashPassword, RegisterUser);
 router.post("/login",  ValidateLogDetails, Login);
 router.post("/validate-code", validateToken);
+router.post("/req-otp", validateToken);
 
 export default router
