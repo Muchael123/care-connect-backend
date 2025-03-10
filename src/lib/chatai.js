@@ -42,10 +42,9 @@ export default async function ChatAi(history, userMessage) {
     const result = await chatSession.sendMessage(userMessage);
     const cleanedString = result.response.text().replace(/```json\n|```/g, "");
     const jsonObject = JSON.parse(cleanedString);
-    console.log(jsonObject);
     return jsonObject;
-    
   } catch (error) {
-    console.error(error);
+    console.error("Error in ChatAi:", error);
+    throw error;
   }
 }

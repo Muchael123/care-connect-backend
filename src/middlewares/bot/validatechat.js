@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 const schema = Joi.object({
-    chatId: Joi.string().optional(),
+    chatid: Joi.string().optional(),
     message: Joi.string().required()
 });
 
