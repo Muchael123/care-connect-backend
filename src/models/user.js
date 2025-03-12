@@ -51,11 +51,10 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
     AuthCode: tokenSchema,
-    fcm: [
-      {
-        type: String,
-      },
-    ],
+    fcm: {
+      type: [String],
+      default: [],
+    },
     resetPasswordToken: {
       type: String,
     },

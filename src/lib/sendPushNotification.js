@@ -2,7 +2,35 @@ import {messaging} from '../config/firebase.js';
 
 async function sendPushNotification(fcm, title, body){
     let sentmsgs = 0;
+    const regex = /^ExponentPushToken\[[a-zA-Z0-9_-]+\]$/;
    for(let i = 0; i < fcm.length; i++){
+         if(regex.test(fcm[i])){
+              //sent via expo
+              const data = {
+                to: fcm[i],
+                title,
+                body,
+                sound: "default",
+                priority: "high",
+              }
+              try{
+                const res = await fetch("https://exp.host/--/api/v2/push/send", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                  });
+                  if(res.ok){
+                    sentmsgs++;
+                  }
+                  console.log("Expo Response:", res.ok);
+                  continue;
+              } catch(err){
+                    console.error("Expo Error:", err);
+                    continue;
+              }
+         }
        const message = {
            notification: {
                title,
