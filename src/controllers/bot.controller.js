@@ -1,10 +1,11 @@
 import Chat from "../models/chat.js";
 import ChatAi from "../lib/chatai.js";
-import { handleSystemActions } from "../utils/systemActions.js";
+import handleSystemActions from "../utils/systemActions.js";
 
 export default async function chatBot(req, res) {
     try {
         const { chatid, message } = req.body;
+        console.log("chatid = ", req.body);
         const user = req.user;
 
         if (!message) {

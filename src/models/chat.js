@@ -31,7 +31,7 @@ const chatSchema = new mongoose.Schema(
 
     reportCount: { type: Number, default: 0 },
   },
-  { apiVersion: false }
+  { versionKey: false }
 );
 
 const Chat = mongoose.model("Chat", chatSchema);

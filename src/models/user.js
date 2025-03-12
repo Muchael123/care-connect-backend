@@ -1,76 +1,93 @@
-
-import  mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const tokenSchema = new mongoose.Schema({
   token: {
     type: Number,
-    required: false
+    required: false,
   },
   expiry: {
     type: Date,
-    required: false
-  }
+    required: false,
+  },
 });
 
-  
-const UserSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true
+const UserSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+    role: {
+      type: String,
+      enum: ["patient", "nurse", "admin"],
+      default: "patient",
+    },
+    firstName: {
+      type: String,
+      minlength: 2,
+      default: "guest",
+    },
+    lastName: {
+      type: String,
+      minlength: 2,
+      default: "guest1",
+    },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    AuthCode: tokenSchema,
+    fcm: [
+      {
+        type: String,
+      },
+    ],
+    resetPasswordToken: {
+      type: String,
+    },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        index: "2dsphere",
+      },
+    },
+    phone: { type: String },
+    imageurl: { 
+      secure_url: { type: String, default:null },
+      public_id: { type: String, default: null },
+    },
+    dob: {
+      type: Date,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-  role: {
-    type: String,
-    enum: ['patient', 'nurse', 'admin'],
-    default: 'patient', 
-  },
- 
-  firstName:  {
-    type: String,
-    required: false,
-    minlength: 2,
-    default: null
-  },
-  lastName: {
-    type: String,
-    required: false,
-    minlength: 2,
-    default: null
-  },
-  verified: {
-    type: Boolean,
-    default: false
-  }, 
-  AuthCode: tokenSchema,
-  fcm: [{
-    type: String,
-    default: null
-  }],
-  resetPasswordToken: {
-    type: String,
-    default: null
-  },
-
-}, { 
+  {
     timestamps: true,
-    versionKey: false
- });
+    versionKey: false,
+  }
+);
 
+UserSchema.index({ email: 1 }, { unique: true });
+UserSchema.index({ username: 1 }, { unique: true });
 
-
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 export default User;

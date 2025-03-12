@@ -3,8 +3,11 @@ import cors from 'cors';
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from './routes/user.route.js';
 import chatRoutes from './routes/chat.route.js';
+import hospitalRoutes from "./routes/hos.route.js";
+
 import { connectDB } from './config/db.js';
 import morgan from 'morgan';
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +39,7 @@ function startServer() {
     app.use(`${api}/auth`, authRoutes);
     app.use(`${api}/user`, userRoutes);
     app.use(`${api}/chat`, chatRoutes);
+    app.use(`${api}/hospitals`, hospitalRoutes);
 
     // Handle 404
     app.use((req, res) => {

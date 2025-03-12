@@ -1,23 +1,17 @@
-export function handleSystemActions(actions = []) {
-    if (!Array.isArray(actions)) return;
-  
-    actions.forEach(action => {
-      switch (action) {
-        case "report_to_nurse":
-          // Implement nurse alert logic here
-          console.log("System Action: Reporting to nurse.");
-          break;
-        case "view_nearby_hospitals":
-          // Implement logic to fetch nearby hospitals
-          console.log("System Action: Fetching nearby hospitals.");
-          break;
-        case "view_nearby_professionals":
-          // Implement logic to fetch nearby professionals
-          console.log("System Action: Fetching nearby professionals.");
-          break;
-        default:
-          console.warn(`Unknown system action: ${action}`);
-      }
-    });
+export default function handleSystemActions(actions = []) {
+  if (!Array.isArray(actions)) return;
+
+  for (let i = 0; i < actions.length; i++) {
+    const action = actions[i];
+    if (action === "report_to_nurse") {
+      console.log("System Action: Reporting to nurse.");
+    } else if (action === "view_nearby_hospitals") {
+      console.log("System Action: Fetching nearby hospitals.");
+      
+    } else if (action === "view_nearby_professionals") {
+      console.log("System Action: Fetching nearby professionals.");
+    } else {
+      console.warn(`Unknown system action: ${action}`);
+    }
   }
-  
+}
