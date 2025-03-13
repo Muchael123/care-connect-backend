@@ -4,7 +4,10 @@ import authRoutes from "./routes/auth.route.js";
 import userRoutes from './routes/user.route.js';
 import chatRoutes from './routes/chat.route.js';
 import hospitalRoutes from "./routes/hos.route.js";
+import 'newrelic';
+import appointmentRoutes from './routes/appointments.route.js';
 
+console.log('New Relic is working', process.env.NEW_RELIC_APP_NAME);
 import { connectDB } from './config/db.js';
 import morgan from 'morgan';
 
@@ -40,6 +43,7 @@ function startServer() {
     app.use(`${api}/user`, userRoutes);
     app.use(`${api}/chat`, chatRoutes);
     app.use(`${api}/hospitals`, hospitalRoutes);
+    app.use(`${api}/appointments`, appointmentRoutes);
 
     // Handle 404
     app.use((req, res) => {

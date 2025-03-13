@@ -2,3 +2,5 @@
 node_modules
 serviceAccountKey.json
 serviceAccountKey*.json
+newrelic*.log
+newrelic_agent.log 

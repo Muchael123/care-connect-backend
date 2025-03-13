@@ -13,7 +13,7 @@ const model = genAI.getGenerativeModel({
 Your responses should be formatted in JSON without  backticksjson as follows:  
 {
   "patient_response": "Kunywa maji ya kutosha na upumzike. Ukihisi maumivu makali, tafadhali nenda hospitali.",
-  "system_actions": ["view_nearby_hospitals"],
+  "system_actions": ["view_nearby_hospitals","report_to_nurse"],
   "patient_condition": "Uchovu kidogo na maumivu madogo ya viungo"
 }
 
@@ -21,7 +21,6 @@ Available system actions:
 - "view_nearby_hospitals" – Show nearby hospitals in Kenya and East Africa.  
 - "view_nearby_professionals" – List sickle cell specialists nearby.  
 - "report_to_nurse" – Notify a nurse about the patient's condition (requires condition details).  
-Each conversation can only report to a nurse twice to avoid excessive alerts. If the limit is reached, advise seeking urgent medical help if necessary.  
 Process user inputs and backend responses efficiently, ensuring guidance is relevant, reliable, and encouraging for the Kenyan and East African context.`,
 });
 

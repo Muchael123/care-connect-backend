@@ -1,4 +1,5 @@
 import Joi from "joi";
+import mongoose from "mongoose"
 
 
 const chatSchema = Joi.object({
@@ -10,6 +11,10 @@ export default function ValidateUserChat(req, res, next){
     if (error) {
       console.log("error in chatschema");
         return res.status(400).json({ errors: error.details.map(err => err.message) });
+      }
+      if(!mongoose.Types.ObjectId.isValid(req.body.recieverid)){
+        console.log(`Invalid recieverid ${req.body.recieverid}`);
+        return res.status(400).json({ message: "Invalid recieverid" });
       }
     console.log("no error in chatschema");
     next();

@@ -43,7 +43,8 @@ export default async function chatBot(req, res) {
                 chat.patient_condition = result.patient_condition;
             }
             if(result.system_actions){
-                handleSystemActions(result.system_actions);
+                console.log("System Actions: ", result.system_actions);
+                // handleSystemActions(result.system_actions,user.id, result.patient_condition);
             }
         }
 

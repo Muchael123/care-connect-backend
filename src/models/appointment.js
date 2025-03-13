@@ -6,9 +6,13 @@ const appointmentSchema = new mongoose.Schema({
     nurse: { type: mongoose.Schema.Types.ObjectId, ref: "Nurse", required: true },
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
+      enum: ["pending", "approved", "rejected", "cancelled"],
       default: "pending",
     },
     reason: { type: String, required: true },
+    time: { type: String, required: true }, 
 
   }, {versionKey: false});
+
+const Appointment = mongoose.model("Appointment", appointmentSchema);
+export default Appointment; 

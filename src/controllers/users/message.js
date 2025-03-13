@@ -17,26 +17,30 @@ export default async function UserChat(req, res) {
     
     // findchat with the user id first
     const chatQuerySnapshot = await chatRef.where("participantsid", "array-contains", id).get();
+
     let chatDoc = null;
-    //find chat with the reciever id
     chatQuerySnapshot.forEach((doc) => {
-        const chat = doc.data();
-        if (chat.participants.id === (recieverid)) {
-            chatDoc = { id: doc.id, ...chat };
-        }
+      const data = doc.data();
+      if (data.participantsid.includes(id) && data.participantsid.includes(recieverid)) {
+        chatDoc = { id: doc.id, ...data };
+      }
     });
 
     console.log(chatDoc);
 
-    const sender = await User.findById(id).select("firstName lastName role fcm");
-if (!sender) {
-    return res.status(404).json({ message: "Sender not found" });
-}
-const reciever = await User.findById(recieverid);
-if (!reciever) {
-    return res.status(404).json({ message: "Reciever not found" });
-}
+    const [sender, reciever] = await Promise.all([
+      User.findById(id).select("firstName lastName role fcm"),
+      User.findById(recieverid),
+    ]);
+
+    if (!sender) {
+      return res.status(404).json({ message: "Sender not found" });
+    }
+    if (!reciever) {
+      return res.status(404).json({ message: "Reciever not found" });
+    }
     console.log("Sener and recievers role",sender.role,reciever.role);
+    // If chat does not exist, create
     if (!chatDoc) {
       const newChat = await chatRef.add({
         participantsid: [id, recieverid],
