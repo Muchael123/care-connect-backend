@@ -1,10 +1,15 @@
+import Joi from "joi";
 import SendEmail from "../../lib/sendEmail.js";
 import Nurse from "../../models/nurse.js";
 import User from "../../models/user.js";
+import bcrypt from "bcryptjs";
 
 export default async function addNurse(req, res){
     const {id} = req.user;
     const {userid, hospitalid} = req.body;
+    if(!hospitalid){
+        return res.status(400).json({message: "Hospital id is required"});
+    }
     
     if(userid){
         try{
@@ -31,11 +36,22 @@ export default async function addNurse(req, res){
             return res.status(500).json({message: "An error occured. Try again later"});
         }
     } else{
-        const {username,email,FistName, LastName, phone, password} = req.body;
-        if(!username || !email || !FistName || !LastName || !phone){
-            return res.status(400).json({message: "All fields are required"});
+        const userschema = Joi.object({
+            username: Joi.string().required(),
+            email: Joi.string().email().required(),
+            firstName: Joi.string().required(),
+            lastName: Joi.string().required(),
+            phone: Joi.string().required(),
+            password: Joi.string().required(),
+            hospitalid: Joi.string().required(),
+            specialty: Joi.array().items(Joi.string()).min(1).required()
+        });
+        const {error} = userschema.validate(req.body, {abortEarly: false});
+
+        if(error){
+            return res.status(400).json({message: error.message});
         }
-        //hashpassword
+        const {username, email,  firstName,  lastName, phone, password, specialty} = req.body
         const salt = bcrypt.genSaltSync(10);
         const mypass = password || process.env.DEFAULT_PASSWORD;
             const hashedPassword = bcrypt.hashSync(mypass, salt);
@@ -43,8 +59,8 @@ export default async function addNurse(req, res){
             const user = new User({
                 username,
                 email,
-                FistName,
-                LastName,
+                firstName,
+                lastName,
                 phone,
                 role: "nurse",
                 password: hashedPassword,
@@ -55,7 +71,8 @@ export default async function addNurse(req, res){
             const newNurse = new Nurse({
                 user: user._id,
                 addedby: id,
-                hospital: hospitalid
+                hospital: hospitalid,
+                specialty
             });
             await newNurse.save();
             return res.status(201).json({message: "Nurse added successfully"});

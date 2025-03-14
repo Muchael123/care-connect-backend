@@ -9,6 +9,7 @@ export default async function addHospital(req, res){
             addedby: id,
             level,
             location: {
+                type: "Point",
                 coordinates
             }
         });
