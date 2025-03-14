@@ -4,6 +4,7 @@ import { Schema, model } from "mongoose";
 
 const hospitalSchema = new Schema({
   name: { type: String, required: true },
+  addedby: { type: Schema.Types.ObjectId, ref: "User", required: true },
   level: {
     type: Number, 
     required: true, 
@@ -16,6 +17,13 @@ const hospitalSchema = new Schema({
   }, 
 }, {versionKey: false});
 hospitalSchema.index({ location: "2dsphere" });
+
+hospitalSchema.pre("findOneAndDelete", async function (next) {
+  const hospitalId = this.getQuery()._id;
+  await mongoose.model("Nurse").deleteMany({ hospital: hospitalId });
+  next();
+});
+
 const Hospital = model("Hospital", hospitalSchema);
 
 export default Hospital;

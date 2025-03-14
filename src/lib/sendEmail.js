@@ -1,15 +1,21 @@
 import nodemailer from "nodemailer";
 
-export default async function SendEmail(username, verificationCode, email, expiryTime) {
+export default async function SendEmail(
+    email, 
+    subject = "Care-Connect User Verification", 
+    message = null, 
+    username = "User", 
+    verificationCode = "000000", 
+    expiryTime = new Date(Date.now() + 5 * 60000) // 
+) {
     // Calculate time remaining (current time to expiry time)
     const now = new Date();
-    const timeDifference = expiryTime - now; // in milliseconds
-
-    // Convert milliseconds to minutes and seconds
+    const timeDifference = expiryTime - now;
     const minutes = Math.floor(timeDifference / 60000);
     const seconds = Math.floor((timeDifference % 60000) / 1000);
 
-    const emailtemplate = `<!DOCTYPE html>
+    // Default verification email template
+    const defaultMessage = `<!DOCTYPE html>
 <html>
 <head>
   <style>
@@ -42,6 +48,8 @@ export default async function SendEmail(username, verificationCode, email, expir
 </html>
 `;
 
+    const emailContent = message || defaultMessage;
+
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -53,8 +61,8 @@ export default async function SendEmail(username, verificationCode, email, expir
     const mailOptions = {
         from: `"Care-Connect" <${process.env.EMAIL_USER}>`,
         to: email,
-        subject: "Care-Connect User Verification",
-        html: emailtemplate
+        subject: subject,
+        html: emailContent
     };
 
     const info = await transporter.sendMail(mailOptions);

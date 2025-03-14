@@ -23,6 +23,7 @@ export default async function addAppointment(req, res) {
         reason,
         date,
         time,
+        owner: id
       };
     } else if (role === "nurse") {
       const { patientid, reason, date, time } = req.body;
@@ -38,7 +39,8 @@ export default async function addAppointment(req, res) {
         reason,
         date,
         time,
-        status: "approved"  
+        status: "approved",
+        owner: id
       };
     } else {
       return res.status(403).json({ message: "Unauthorized role" });

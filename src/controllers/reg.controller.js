@@ -29,7 +29,7 @@ export default async function RegisterUser(req, res){
     const user = await User.create({
       username,
       email,
-      password,
+      password: hashedPassword,
       AuthCode: {
         token,
         expiry: expiryTime

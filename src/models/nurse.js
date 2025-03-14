@@ -12,7 +12,8 @@ const nurseSchema = new mongoose.Schema({
     specialty: [{ type: String, required: true }], 
     hospital: { type: mongoose.Schema.Types.ObjectId, ref: "Hospital" },
     schedule: [scheduleSchema],
-  });
+    addedby: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  }, { timestamps: true, versionKey: false });
 
   const Nurse = mongoose.model("Nurse", nurseSchema);
   export default Nurse;

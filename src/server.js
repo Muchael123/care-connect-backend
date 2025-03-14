@@ -6,6 +6,7 @@ import chatRoutes from './routes/chat.route.js';
 import hospitalRoutes from "./routes/hos.route.js";
 import 'newrelic';
 import appointmentRoutes from './routes/appointments.route.js';
+import adminRoutes from './routes/admin.route.js';
 
 console.log('New Relic is working', process.env.NEW_RELIC_APP_NAME);
 import { connectDB } from './config/db.js';
@@ -44,10 +45,11 @@ function startServer() {
     app.use(`${api}/chat`, chatRoutes);
     app.use(`${api}/hospitals`, hospitalRoutes);
     app.use(`${api}/appointments`, appointmentRoutes);
+    app.use(`${api}/admin`, adminRoutes);
 
     // Handle 404
     app.use((req, res) => {
-        res.status(404).json({ error: `Route ${req.originalUrl} not found` });
+        res.status(404).json({ error: `Route ${req.method} to ${req.originalUrl} not found` });
     });
 
     // Start Server
