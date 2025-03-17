@@ -39,7 +39,12 @@ function startServer() {
     app.get('/', (req, res) => {
         res.send('Welcome to the care-connect API');
     });
-
+    app.use((err, req, res, next) => {
+        if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+            return res.status(400).json({ error: "Invalid JSON format. Ensure all property names are double-quoted." });
+        }
+        next();
+    });
     app.use(`${api}/auth`, authRoutes);
     app.use(`${api}/user`, userRoutes);
     app.use(`${api}/chat`, chatRoutes);

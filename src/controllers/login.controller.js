@@ -22,10 +22,9 @@ export default async function Login(req, res) {
 
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
-    }
-    console.log("user = ", user);
-
-    const isMatch = bcrypt.compareSync(password, user.password);
+    };
+    console.log("pasword", user.password, password);
+    const isMatch = bcrypt.compare(password, user.password);
     console.log("mached = ", isMatch);
 
     if (!isMatch) {
@@ -49,7 +48,7 @@ export default async function Login(req, res) {
         lastName: user.lastName,
       },
     });
-    if (user.fcm.length > 0) {
+    if (user?.fcm?.length > 0) {
       console.log("FCM token found",user.fcm);
       const sentfcm = await sendPushNotification(
         user.fcm,

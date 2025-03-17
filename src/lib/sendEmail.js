@@ -2,19 +2,16 @@ import nodemailer from "nodemailer";
 
 export default async function SendEmail(
     email, 
+    verificationCode,
+    username,
+    expiryTime = new Date(Date.now() + 15 * 60000),
     subject = "Care-Connect User Verification", 
-    message = null, 
-    username = "User", 
-    verificationCode = "000000", 
-    expiryTime = new Date(Date.now() + 5 * 60000) // 
+    message = null,  
 ) {
-    // Calculate time remaining (current time to expiry time)
     const now = new Date();
     const timeDifference = expiryTime - now;
     const minutes = Math.floor(timeDifference / 60000);
     const seconds = Math.floor((timeDifference % 60000) / 1000);
-
-    // Default verification email template
     const defaultMessage = `<!DOCTYPE html>
 <html>
 <head>
