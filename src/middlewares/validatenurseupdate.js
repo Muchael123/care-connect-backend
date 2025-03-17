@@ -10,8 +10,10 @@ const scheduleSchema = Joi.object({
 });
 
 export default function validateNurseUpdate(req, res, next) {
-    const { error } = scheduleSchema.validate(req.body);
+    console.log(req.body);
+    const { error } = scheduleSchema.validate(req.body, { abortEarly: false });
     if (error) {
+        console.log(error);
         return res.status(400).json({ message: error.message });
     }
     if(req.user.role !== "nurse"){

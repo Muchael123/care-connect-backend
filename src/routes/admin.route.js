@@ -9,6 +9,7 @@ import validateHospitalUpdate from "../middlewares/admin/validatehospitaUpdate.j
 import deleteHospital from "../controllers/admin/deleteHospital.js";
 import addNurse from "../controllers/admin/addNurse.js";
 import getAllHospitals from "../controllers/admin/allhospitals.js";
+import getHospital from "../controllers/admin/getHospital.js";
 
 
 const router = Router();
@@ -20,6 +21,7 @@ router.get("/hospitals", getAllHospitals);
 router.post("/hospital",hospitalValidate, addHospital);
 router.patch("/hospital/:hospitalid",validateHospitalUpdate, updateHospital);
 router.delete("/hospital/:hospitalid", deleteHospital);
+router.get("/hospital/:hospitalid", getHospital);
 
 //nurses
 router.post("/nurse", addNurse);

@@ -3,6 +3,7 @@ import Hospital from "../../models/hospital.js";
 export default async function addHospital(req, res){
     const {id} = req.user;
     const {name, level, coordinates} = req.body;
+    console.log(req.body);
     try{
         const hospital = new Hospital({
             name,

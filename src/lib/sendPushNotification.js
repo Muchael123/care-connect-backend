@@ -3,7 +3,7 @@ import {messaging} from '../config/firebase.js';
 async function sendPushNotification(fcm, title, body){
     let sentmsgs = 0;
     const regex = /^ExponentPushToken\[[a-zA-Z0-9_-]+\]$/;
-   for(let i = 0; i < fcm.length; i++){
+   for(let i = 0; i < fcm?.length; i++){
          if(regex.test(fcm[i])){
               //sent via expo
               const data = {

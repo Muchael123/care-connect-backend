@@ -44,6 +44,9 @@ export default async function Login(req, res) {
         username: user.username,
         email: user.email,
         role: user.role,
+        phone: user.phone,
+        firstName: user.firstName,
+        lastName: user.lastName,
       },
     });
     if (user.fcm.length > 0) {
