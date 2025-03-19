@@ -6,7 +6,6 @@ import generateVerificationCode from "../lib/gencode.js";
 export default async function RegisterUser(req, res){
    try{
    const {email, password, username} = req.body;
-   console.log(req.body);
    const userExist = await User
    .findOne({username})
    if(userExist) return res.status(409).json({message: "Username already exists"})
@@ -44,7 +43,6 @@ export default async function RegisterUser(req, res){
   
    }
    catch(e){
-      console.log(e)
       res.status(500).json({error: "An error occured. Try again"})
    }
 }

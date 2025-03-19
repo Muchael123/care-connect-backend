@@ -9,11 +9,9 @@ export default async  function handleSystemActions(actions = [], userid, patient
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
     if (action === "report_to_nurse") {
-      console.log("System Action: Reporting to nurse.");
       // finduserdetails
       const user = User.findById(userid);
       if (!user) {
-        console.log("User not found.");
         return;
       }
       //find nearby hospital
@@ -38,14 +36,12 @@ export default async  function handleSystemActions(actions = [], userid, patient
         { $limit: 1 }
     ]);
     if (!NearbyHospital.length) {
-        console.log("No hospitals found nearby.");
         return;
     }      
       //find nurses in the hospital
       const hospital = await Hospital.findById(NearbyHospital[0].id);
       const nurses = await Nurse.find({ hospital: hospital.id }).populate('user').limit(5);
       if (!nurses.length) {
-        console.log("No nurses found in the hospital.");
         return;
       }
       //send push notification to the nurse

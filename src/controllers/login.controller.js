@@ -4,28 +4,23 @@ import jwt from "jsonwebtoken";
 import sendPushNotification from "../lib/sendPushNotification.js";
 
 export default async function Login(req, res) {
-  console.log("Loging in..");
   try {
     const { password, username } = req.body;
-    console.log(req.body);
     let user;
     user = await User
         .findOne({ username
         });
-        
     if(!user){
       user = await User
       .findOne({ email: username
       });
     }
-    console.log("user = ", user);
 
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     };
-    console.log("pasword", user.password, password);
     const isMatch = bcrypt.compare(password, user.password);
-    console.log("mached = ", isMatch);
+    ;
 
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -49,13 +44,11 @@ export default async function Login(req, res) {
       },
     });
     if (user?.fcm?.length > 0) {
-      console.log("FCM token found",user.fcm);
       const sentfcm = await sendPushNotification(
         user.fcm,
         "Login",
         "New login detected on your account"
       );
-      console.log("Notification sent", sentfcm);
     }
   } catch (e) {
     console.log("An error occured", e);

@@ -5,7 +5,6 @@ export default async function UpdateFcm(req, res){
        
         const {fcm} = req.body;
         const user = req.user;
-        console.log(req.body);
         if (!fcm) {
             return res.status(400).json({ message: "Fcm is required" });
         }

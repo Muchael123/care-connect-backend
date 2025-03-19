@@ -9,7 +9,6 @@ export default async function updateNurseSchedule(req, res) {
         return res.status(403).json({message: "Forbidden"});
     }
     const { schedule } = req.body;
-    console.log('update Nurse Schedule', schedule);
     try{
         const nurse = await Nurse.findOne({ user: id });
         if(!nurse){

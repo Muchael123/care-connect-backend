@@ -4,7 +4,6 @@ export default async function updateAppointment(req, res) {
   const { id, role } = req.user;
 
   const { appointmentid } = req.params;
-  console.log("id = ",id, appointmentid);
     if (role === "nurse") {
         const { status } = req.body;
         if(!status){
@@ -12,9 +11,7 @@ export default async function updateAppointment(req, res) {
         }
         try {
         const appointment = await Appointment.findOneAndUpdate({ _id: appointmentid, nurse: id }, { status }, { new: true });
-        console.log("Appointment = ",appointment);
         if (!appointment) {
-            console.log("Appointment not found");
             return res.status(404).json({ message: "Appointment not found" });
         }
         return res.status(200).json({ message: "Appointment updated", appointment });

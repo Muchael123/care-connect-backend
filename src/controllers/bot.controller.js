@@ -5,7 +5,6 @@ import handleSystemActions from "../utils/systemActions.js";
 export default async function chatBot(req, res) {
     try {
         const { chatid, message } = req.body;
-        console.log("chatid = ", req.body);
         const user = req.user;
 
         if (!message) {
@@ -43,8 +42,7 @@ export default async function chatBot(req, res) {
                 chat.patient_condition = result.patient_condition;
             }
             if(result.system_actions){
-                console.log("System Actions: ", result.system_actions);
-                // handleSystemActions(result.system_actions,user.id, result.patient_condition);
+                handleSystemActions(result.system_actions,user.id, result.patient_condition);
             }
         }
 

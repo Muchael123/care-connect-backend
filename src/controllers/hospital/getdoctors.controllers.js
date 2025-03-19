@@ -25,7 +25,6 @@ export default async function getDoctorsByHospitalId(req, res) {
                 : "Unknown Nurse", 
             specialty: doctor.specialty || []
         })));
-        console.log(doctors);
         
     } catch (error) {
         console.error("Error fetching doctors by hospital ID:", error);

@@ -22,7 +22,6 @@ let db = null;
 async function connectToMongo() {
     db = await connectDB();
     if (!db) {
-        console.log('Retrying in 5 seconds...');
         setTimeout(connectToMongo, 5000);
     } else {
         startServer();

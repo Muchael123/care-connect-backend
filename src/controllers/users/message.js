@@ -5,8 +5,7 @@ import User from "../../models/user.js";
 export default async function UserChat(req, res) {
   const { id } = req.user;
   const { message, recieverid } = req.body;
-  
-  console.log(req.body);
+
   if (!message || !recieverid) {
     return res.status(400).json({ message: "Please provide a message and recieverid" });
   }
@@ -26,7 +25,6 @@ export default async function UserChat(req, res) {
       }
     });
 
-    console.log(chatDoc);
 
     const [sender, reciever] = await Promise.all([
       User.findById(id).select("firstName lastName role fcm"),
@@ -34,12 +32,12 @@ export default async function UserChat(req, res) {
     ]);
 
     if (!sender) {
-      return res.status(404).json({ message: "Sender not found" });
+      return res.status(404).json({ message: "Sender not found" }); 
     }
     if (!reciever) {
       return res.status(404).json({ message: "Reciever not found" });
     }
-    console.log("Sener and recievers role",sender.role,reciever.role);
+    
     // If chat does not exist, create
     if (!chatDoc) {
       const newChat = await chatRef.add({
