@@ -35,6 +35,7 @@ export default async function RegisterUser(req, res){
       }
     });
     console.log(user, expiryTime)
+    await user.save()
 
     res.status(201).json({
       message: `User ${user.username} registered successfully. Check your email for verification code.`,

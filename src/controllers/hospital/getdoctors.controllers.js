@@ -10,7 +10,7 @@ export default async function getDoctorsByHospitalId(req, res) {
         }
 
         const doctors = await Nurse.find({ hospital: id })
-            .populate("user", "email phoneNumber firstName lastName");
+            .populate("user", "email phoneNumber firstName lastName fcm");
 
         if (!doctors || doctors.length === 0) {
             return res.status(404).json({ message: "No doctors found for this hospital." });
@@ -23,7 +23,8 @@ export default async function getDoctorsByHospitalId(req, res) {
             full_name: doctor.user 
                 ? `${doctor.user.firstName} ${doctor.user.lastName}`
                 : "Unknown Nurse", 
-            specialty: doctor.specialty || []
+            specialty: doctor.specialty || [],
+            fcm: doctor.user?.fcm || [],
         })));
         
     } catch (error) {

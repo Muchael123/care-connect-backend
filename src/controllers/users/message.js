@@ -1,3 +1,4 @@
+import { FieldValue } from "firebase-admin/firestore";
 import { db } from "../../config/firebase.js";
 import sendPushNotification from "../../lib/sendPushNotification.js";
 import User from "../../models/user.js";
@@ -12,18 +13,14 @@ export default async function UserChat(req, res) {
   
 
   try {
-    const chatRef = db.collection("chats");
+    const chatroomid = [id, recieverid].sort().join("_");
+    const chatRef = db.collection("chats").doc(chatroomid);
     
-    // findchat with the user id first
-    const chatQuerySnapshot = await chatRef.where("participantsid", "array-contains", id).get();
+  
 
-    let chatDoc = null;
-    chatQuerySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.participantsid.includes(id) && data.participantsid.includes(recieverid)) {
-        chatDoc = { id: doc.id, ...data };
-      }
-    });
+    const chatDoc =await chatRef.get();
+
+  
 
 
     const [sender, reciever] = await Promise.all([
@@ -40,7 +37,7 @@ export default async function UserChat(req, res) {
     
     // If chat does not exist, create
     if (!chatDoc) {
-      const newChat = await chatRef.add({
+      const newChat = await chatRef.set({
         participantsid: [id, recieverid],
         participants: [{
           id,
@@ -58,22 +55,17 @@ export default async function UserChat(req, res) {
         ],
         createdAt: Date.now(),
       });
-      res.status(201).json({ message: "Message sent successfully", chatid: newChat.id });
+      res.status(201).json({ message: "Message sent successfully", chatid: chatroomid });
       return sendPushNotification(reciever.fcm, "New message", message);
     }
     
-    // Chat exists; add new message to the existing messages array.
-    const chatId = chatDoc.id;
-    const updatedMessages = [
-      ...chatDoc.messages,
-      {
-        senderid: id,
-        message,
-        timestamp: Date.now(),
-      }
-    ];
-    await chatRef.doc(chatId).update({ messages: updatedMessages });
-    res.status(200).json({ message: "Message sent successfully", chatid: chatId });
+
+    await chatRef.update({ "messages":FieldValue.arrayUnion({ 
+      senderid: id,
+      message,
+      timestamp: Date.now(),
+    } )});
+    res.status(200).json({ message: "Message sent successfully", chatid: chatroomid });
     return sendPushNotification(reciever.fcm, "New message", message);
     
   } catch (error) {

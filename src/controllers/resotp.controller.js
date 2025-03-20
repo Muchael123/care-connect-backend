@@ -16,13 +16,6 @@ export default async function resendOTP(req, res) {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
-       
-        const currentTime = new Date();
-        if (user.AuthCode && user.AuthCode.expiry > currentTime) {
-            return res.status(400).json({ message: "OTP is still valid. Please check your email." });
-        }
-
         
         const newOTP = crypto.randomInt(100000, 999999);
 

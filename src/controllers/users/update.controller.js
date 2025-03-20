@@ -4,13 +4,16 @@ export default async function updateUserDetails(req, res){
     const {user} = req;
     const {image} = req;
     const {firstName, lastName, phoneNumber,username} = req.body;
+    const updates = {};
+    if(firstName) updates.firstName = firstName;
+    if(lastName) updates.lastName = lastName;
+    if(phoneNumber) updates.phone = phoneNumber;
+    if(username) updates.username = username;
     
     try{
         const updateUser = await User.findByIdAndUpdate(user.id, {
-            firstName,
-            lastName,
-            phone: phoneNumber,
-            username,
+            ...updates,
+        }, {new: true
         })
         await updateUser.save();
 

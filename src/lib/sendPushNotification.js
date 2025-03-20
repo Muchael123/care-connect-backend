@@ -25,6 +25,8 @@ async function sendPushNotification(fcm, title, body){
                     sentmsgs++;
                   }
                   console.log("Expo Response:", res.ok);
+                  const datas = await res.json();
+                  console.log("Expo Data:", datas);
                   continue;
               } catch(err){
                     console.error("Expo Error:", err);
