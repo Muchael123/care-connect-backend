@@ -16,5 +16,5 @@ export default function ValidateUserToken(req, res, next){
     catch(e){
         return res.status(401).json({message: "Invalid token"});
     }
-
+ 
 }

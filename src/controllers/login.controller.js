@@ -19,6 +19,9 @@ export default async function Login(req, res) {
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     };
+    if(user.verified === false){
+      return res.status(401).json({ message: "Account not verified" });
+    }
     const isMatch = bcrypt.compare(password, user.password);
     ;
 
