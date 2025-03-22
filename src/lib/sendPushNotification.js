@@ -1,6 +1,6 @@
 import {messaging} from '../config/firebase.js';
 
-async function sendPushNotification(fcm, title, body){
+async function sendPushNotification(fcm, title, body, data=null){
     let sentmsgs = 0;
     const regex = /^ExponentPushToken\[[a-zA-Z0-9_-]+\]$/;
    for(let i = 0; i < fcm?.length; i++){
@@ -38,8 +38,12 @@ async function sendPushNotification(fcm, title, body){
                title,
                body
            },
+          
            token: fcm[i]
 
+       }
+       if(data){
+            message.data = data;
        }
        try {
           const sent =  await messaging.send(message);

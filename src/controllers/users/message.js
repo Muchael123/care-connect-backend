@@ -15,14 +15,7 @@ export default async function UserChat(req, res) {
   try {
     const chatroomid = [id, recieverid].sort().join("_");
     const chatRef = db.collection("chats").doc(chatroomid);
-    
-  
-
     const chatDoc =await chatRef.get();
-
-  
-
-
     const [sender, reciever] = await Promise.all([
       User.findById(id).select("firstName lastName role fcm"),
       User.findById(recieverid),
@@ -56,7 +49,7 @@ export default async function UserChat(req, res) {
         createdAt: Date.now(),
       });
       res.status(201).json({ message: "Message sent successfully", chatid: chatroomid });
-      return sendPushNotification(reciever.fcm, "New message", message);
+      return sendPushNotification(reciever.fcm, "New message", message, { chatroomid });
     }
     
 
@@ -66,7 +59,7 @@ export default async function UserChat(req, res) {
       timestamp: Date.now(),
     } )});
     res.status(200).json({ message: "Message sent successfully", chatid: chatroomid });
-    return sendPushNotification(reciever.fcm, "New message", message);
+    return sendPushNotification(reciever.fcm, "New message", message, { chatroomid });
     
   } catch (error) {
     console.error("Error sending message:", error);

@@ -42,7 +42,7 @@ export default async function addNurse(req, res){
             firstName: Joi.string().required(),
             lastName: Joi.string().required(),
             phone: Joi.string().required(),
-            password: Joi.string().required(),
+            password: Joi.string().optional(),
             hospitalid: Joi.string().required(),
             specialty: Joi.array().items(Joi.string()).min(1).required()
         });

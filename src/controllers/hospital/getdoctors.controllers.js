@@ -10,7 +10,7 @@ export default async function getDoctorsByHospitalId(req, res) {
         }
 
         const doctors = await Nurse.find({ hospital: id })
-            .populate("user", "email phoneNumber firstName lastName fcm");
+            .populate("user", "email phone firstName lastName fcm");
 
         if (!doctors || doctors.length === 0) {
             return res.status(404).json({ message: "No doctors found for this hospital." });
@@ -19,7 +19,7 @@ export default async function getDoctorsByHospitalId(req, res) {
         res.json(doctors.map(doctor => ({
             id: doctor.user?._id || null,
             email: doctor.user?.email || null, 
-            phone: doctor.user?.phoneNumber || null,
+            phone: doctor.user?.phone || null,
             full_name: doctor.user 
                 ? `${doctor.user.firstName} ${doctor.user.lastName}`
                 : "Unknown Nurse", 
